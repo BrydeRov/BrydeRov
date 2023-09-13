@@ -1,48 +1,29 @@
-name: Generate Snake
+name: Generate snake animation
 
 on:
-  schedule:
-  
-  
-    - cron: "0 */1 * * *"
-# "*/1 * * * *"
-# cron(0/5
-# "0 */1 * * *"
-
+  schedule: # execute every 12 hours
+    - cron: "* */12 * * *"
 
   workflow_dispatch:
 
+  push:
+    branches:
+    - master
 
 jobs:
-  build:
+  generate:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: Platane/snk@v2
-        id: bylickilabs-Snake
+      - name: generate snake.svg
+        uses: Platane/snk/svg-only@v2
         with:
           github_user_name: BrydeRov
-          outputs: |
-                     dist/github-snake-dark.svg?palette=github-dark
+          outputs: dist/snake.svg
 
-# I     dist/github-snake.svg
-# II    dist/github-snake-dark.svg?palette=github-dark
-# III   dist/bylickilabs-Snake.svg?palette=github-dark&color_snake=red&color_dots=#000000F;#CDAD00;#EEC900;#FFD700;#FFD700;
-# IV    dist/bylickilabs-Snake.svg?palette=github-dark&color_snake=white&color_dots=#000000F;#5E5E5E;#787878;#919191;#BDBDBD;
 
-            
-      - run: git status
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.SNAKEWORKFLOW_TOKEN }}
-          branch: master
-          force: true
-
-      - uses: crazy-max/ghaction-github-pages@v3.1.0
+      - name: push snake.svg to the output branch
+        uses: crazy-max/ghaction-github-pages@v2.6.0
         with:
           target_branch: output
           build_dir: dist
