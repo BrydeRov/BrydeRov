@@ -19,7 +19,9 @@ jobs:
         uses: Platane/snk/svg-only@v2
         with:
           github_user_name: BrydeRov
+          token: ${{ secrets.SNAKEWORKFLOW_TOKEN }}
           outputs: dist/snake.svg
+          ref: main
 
 
       - name: push snake.svg to the output branch
